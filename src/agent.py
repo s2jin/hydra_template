@@ -24,6 +24,7 @@ class Agent():
 
 
 
+
 def cache(inputs=None, outputs=None, verbose=True):
 
     if outputs == None: mode = 'r'
