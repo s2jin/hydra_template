@@ -1,0 +1,53 @@
+# @package _global_
+
+name: null      # of the run, require experiment mode
+seed: 42        # for random number generators pytorch, numpy and python.random
+keyword: ''
+version: 1
+
+work_dir: ${hydra:runtime.cwd}      # path to original working directory, why use thie? -> https://hydra.cc/docs/next/tutorials/basic/running_your_app/working_directory
+job_num: ${hydra:job.num}
+
+save_dir: checkpoint/${name}_v${version}
+save_path: ${now:%Y-%m-%d_%H-%M}_${keyword}
+checkpoint_path: null
+result_file_path: 'result.jsonl'
+
+print_config: True      # pretty print config at the start of the run using Rich library
+ignore_warnings: True       # disable python warnings
+
+# ----- specify here default training configuration ----- 
+defaults:
+    - _self_      ## main for library = current dir
+    - task: ???
+    
+    - override hydra/hydra_logging: colorlog      # enable color logging
+    - override hydra/job_logging: colorlog        # enable color logging
+
+# -----------------------------------------------------
+
+
+# ----- for hydra config ---------------------
+hydra:
+    sweep:
+        dir: ${save_dir}
+        subdir: ${save_path} 
+    run:        # do not create outputs dir, require output_subdir=null
+        dir: ${save_dir}/${save_path}
+    job_logging:
+        colorlog:
+          format: '[%(cyan)s%(asctime)s%(reset)s][%(blue)s%(name)s%(reset)s][%(log_color)s%(levelname)s%(reset)s] - %(message)s'
+        handlers:
+          console:
+              level: INFO
+          file:
+              filename: ${save_dir}/${save_path}/log_${now:%y%m%d%H%M}.log
+              formatter: colorlog
+              level: DEBUG
+        root:
+            level: DEBUG
+    job:
+        chdir: False
+#  -----------------------------------------
+
+
