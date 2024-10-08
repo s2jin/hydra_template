@@ -60,5 +60,14 @@ def set_seed(seed):
 
 
 if __name__=='__main__':
-    ## TODO __main__일 때, config file load하는 부분 작성할 것
-    pass
+    
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument('config_path', nargs='+', metavar='str', type=str)
+    args = parser.parse_args()
+    
+    if len(args.config_path) != 1: raise ValueError(f'config_path need one path, but input is {args.config_path}')
+    config = OmegaConf.load(args.config_path[0])
+    agent = Agent(**config)
+
+    agent.run()
