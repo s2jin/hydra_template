@@ -1,6 +1,21 @@
 # @package _global_
+
+## === DEFAULT ==============================
+
+version: 1
 name: ${agent.name}_${model.name}
+keyword: ''
+seed: 42        # for random number generators pytorch, numpy and python.random
+print_config: True      # pretty print config at the start of the run using Rich library
+
+save_dir: checkpoint/${name}_v${version}
 save_path: temperature${model.temperature}_${keyword}
+checkpoint_path: null
+result_file_path: 'result.jsonl'
+
+## ==========================================
+
+## === TASK Specific ========================
 
 is_call_api: False
 
@@ -15,4 +30,6 @@ model:
 agent:
   name: 'agent'
   _target_: src.${agent.name}.Agent
+
+## ==========================================  
 
