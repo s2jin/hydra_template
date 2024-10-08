@@ -1,10 +1,11 @@
 # @package _global_
-name: ${agent.name}_${model.name}_t${model.temperature}
-save_path: temperature${model.temperature}_fp${model.frequency_penalty}_pp${presence_penalty}_${keyword}
+name: ${agent.name}_${model.name}
+save_path: temperature${model.temperature}_${keyword}
 
 is_call_api: False
 
 model:
+  name: 'default'
   temperature: 0
   max_tokens: 2048
   top_p: 1
@@ -12,7 +13,6 @@ model:
   presence_penalty: 0
 
 agent:
-  name: 'azure_openapi_call'
+  name: 'agent'
   _target_: src.${agent.name}.Agent
-
 
